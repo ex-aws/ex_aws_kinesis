@@ -1,19 +1,37 @@
 defmodule ExAws.Kinesis.Mixfile do
   use Mix.Project
 
+  @version "2.0.1"
+  @service "kinesis"
+  @url "https://github.com/ex-aws/ex_aws_#{@service}"
+  @name __MODULE__ |> Module.split() |> Enum.take(2) |> Enum.join(".")
+
   def project do
     [
       app: :ex_aws_kinesis,
-      version: "2.0.0",
+      version: @version,
       elixir: "~> 1.5",
-      elixirc_paths: elixirc_paths(Mix.env),
-      start_permanent: Mix.env == :prod,
-      deps: deps()
+      elixirc_paths: elixirc_paths(Mix.env()),
+      start_permanent: Mix.env() == :prod,
+      deps: deps(),
+      name: @name,
+      package: package(),
+      docs: [main: @name, source_ref: "v#{@version}", source_url: @url]
+    ]
+  end
+
+  defp package do
+    [
+      description: "#{@name} service package",
+      files: ["lib", "config", "mix.exs", "README*"],
+      maintainers: ["Ben Wilson"],
+      licenses: ["MIT"],
+      links: %{github: @url}
     ]
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_),     do: ["lib",]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Run "mix help compile.app" to learn about applications.
   def application do
@@ -28,7 +46,8 @@ defmodule ExAws.Kinesis.Mixfile do
       {:hackney, ">= 0.0.0", only: [:dev, :test]},
       {:sweet_xml, ">= 0.0.0", only: [:dev, :test]},
       {:poison, ">= 0.0.0", only: [:dev, :test]},
-      ex_aws(),
+      {:ex_doc, ">= 0.0.0", only: :dev},
+      ex_aws()
     ]
   end
 
