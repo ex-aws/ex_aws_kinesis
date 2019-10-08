@@ -35,6 +35,12 @@ defmodule ExAws.Kinesis do
     request(:describe_stream, data)
   end
 
+  @doc "Describe stream summary"
+  @spec describe_stream_summary(stream_name :: stream_name) :: ExAws.Operation.JSON.t()
+  def describe_stream_summary(stream_name) do
+    request(:describe_stream_summary, %{"StreamName" => stream_name})
+  end
+
   @doc "Creates stream"
   @spec create_stream(stream_name :: stream_name) :: ExAws.Operation.JSON.t
   @spec create_stream(stream_name :: stream_name, shard_count :: pos_integer) :: ExAws.Operation.JSON.t
